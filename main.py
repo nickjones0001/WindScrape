@@ -12,7 +12,7 @@ creds = Credentials.from_service_account_info(service_account_info, scopes=scope
 gc = gspread.authorize(creds)
 
 # 2. Config
-SPREADSHEET_ID = 'YOUR_SPREADSHEET_ID_HERE'
+SPREADSHEET_ID = '1CJmdkRyENnsozbXXUBRPbEhPBef8yVL1CklEwsHNcH0'
 STATIONS = {
     "Frankston Beach": "http://www.bom.gov.au/fwo/IDV60901/IDV60901.95866.json",
     "Fawkner Beacon": "http://www.bom.gov.au/fwo/IDV60801/IDV60801.95872.json",
