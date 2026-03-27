@@ -39,7 +39,7 @@ def get_data():
     return all_rows
 
 # 3. Run
-sheet = gc.open_by_key(1CJmdkRyENnsozbXXUBRPbEhPBef8yVL1CklEwsHNcH0).worksheet("WindData")
+sheet = gc.open_by_key("1CJmdkRyENnsozbXXUBRPbEhPBef8yVL1CklEwsHNcH0").worksheet("WindData")
 data = get_data()
 if data:
     sheet.append_rows(data)
