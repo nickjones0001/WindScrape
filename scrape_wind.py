@@ -15,11 +15,10 @@ gc = gspread.authorize(creds)
 sh = gc.open("Wind+WaveScrapeLLM 28-3-2026")
 worksheet = sh.worksheet("Wind")
 
-# Localized Geographic Node Endpoints (BoM JSON)
+# Localized Geographic Node Endpoints (BoM JSON) - South Channel Removed
 STATIONS = {
     "Fawkner Beacon": "http://www.bom.gov.au/fwo/IDV60901/IDV60901.086376.json",
-    "Frankston Beach": "http://www.bom.gov.au/fwo/IDV60801/IDV60801.95872.json",
-    "South Channel Island": "http://www.bom.gov.au/fwo/IDV60901/IDV60901.086344.json"
+    "Frankston Beach": "http://www.bom.gov.au/fwo/IDV60801/IDV60801.95872.json"
 }
 
 headers = {'User-Agent': 'Mozilla/5.0'}
@@ -28,6 +27,7 @@ def kmh_to_knots(kmh):
     return round(kmh * 0.539957, 2) if kmh is not None else None
 
 # Execution Loop: Extract temporal data and standardized wind metrics
+rows_added = 0
 for name, url in STATIONS.items():
     try:
         response = requests.get(url, headers=headers)
@@ -47,6 +47,9 @@ for name, url in STATIONS.items():
         
         # Append structured metrics to longitudinal tracking spreadsheet
         worksheet.append_row([obs_date, obs_time, name, "N/A", "N/A", "N/A", wind_spd_kts, wind_gust_kts, wind_dir])
+        rows_added += 1
     except Exception as e:
         # Diagnostic logger will record the drop without crashing the pipeline
         print(f"Extraction failure for {name}: {e}")
+
+print(f"Success: {rows_added} rows added at {datetime.utcnow()}")
