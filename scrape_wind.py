@@ -31,7 +31,9 @@ def kmh_to_knots(kmh):
 for name, url in STATIONS.items():
     try:
         response = requests.get(url, headers=headers)
-        data = response.json()['observations']['data']
+        
+        # CRITICAL FIX: Spaces added inside [ 0 ] to extract the most recent temporal observation
+        data = response.json()['observations']['data'][ 0 ]
         
         # Isolate temporal observation string
         raw_time = data['local_date_time_full']
@@ -46,4 +48,5 @@ for name, url in STATIONS.items():
         # Append structured metrics to longitudinal tracking spreadsheet
         worksheet.append_row([obs_date, obs_time, name, "N/A", "N/A", "N/A", wind_spd_kts, wind_gust_kts, wind_dir])
     except Exception as e:
+        # Diagnostic logger will record the drop without crashing the pipeline
         print(f"Extraction failure for {name}: {e}")
